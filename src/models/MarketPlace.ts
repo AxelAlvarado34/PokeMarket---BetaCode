@@ -21,4 +21,16 @@ export class Marketplace {
     filterByPrice(min: number, max: number) {
         return this.pokemons.filter((p) => p.price >= min && p.price <= max);
     }
+
+    sortBy(option: "name" | "priceAsc" | "priceDesc") {
+        const sorted = [...this.pokemons];
+        if (option === "name") {
+            sorted.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (option === "priceAsc") {
+            sorted.sort((a, b) => a.price - b.price);
+        } else if (option === "priceDesc") {
+            sorted.sort((a, b) => b.price - a.price);
+        }
+        return sorted;
+    }
 }
