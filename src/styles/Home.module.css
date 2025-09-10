@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+.home {
+    height: 100vh;
+    font-family: 'Manrope', sans-serif;
+}
+
+.carousel {
+    padding: 40px 0px;
+}
+
+.home_sales {
+    margin-left: 50px;
+    font-size: 1.5rem;
+    background-color: rgb(240, 240, 240);
+    width: 250px;
+    color: rgb(115, 115, 115);
+    font-weight: 400;
+    padding: 5px 0;
+    padding-left: 20px;
+    border-radius: 50px;
+}

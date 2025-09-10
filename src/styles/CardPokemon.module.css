@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+.carrousel_section {
+    padding: 0 50px;
+}
+
+.card {
+    font-family: 'Manrope', sans-serif;
+    display: flex;
+    gap: 10px;
+    border-radius: 1rem;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 250px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cardImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    border-top-right-radius: 120px;
+    border-bottom-right-radius: 120px;
+    position: relative;
+}
+
+
+.cardImage-fire {
+    background: linear-gradient(135deg, #fbc2cb 0%, #fca6ca 100%);
+}
+
+.cardImage-water {
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+.cardImage-grass {
+    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+}
+
+.cardImage-electric {
+    background: linear-gradient(135deg, #fef9c3 0%, #fce38a 100%);
+}
+
+.cardImage-default {
+    background: linear-gradient(135deg, #e0e0e0 0%, #cfcfcf 100%);
+}
+
+.cardImage {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+
+.cardBody {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.cardName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 0.5rem;
+    color: #424244;
+}
+
+.cardPrice {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #a2a2a2;
+    margin-bottom: 0.5rem;
+}
+
+.stock_icon {
+    margin-top: -10px;
+    color: #9ca3af;
+}
+
+.stock_sec {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cardStock {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.cardTypes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.typeBadge {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    border-radius: 9999px;
+    color: white;
+}
+
+.type-fire {
+    background: linear-gradient(135deg, #f87171 0%, #fca5a5 100%);
+}
+
+.type-water {
+    background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+}
+
+.type-grass {
+    background: linear-gradient(135deg, #4ade80 0%, #86efac 100%);
+}
+
+.type-electric {
+    background: linear-gradient(135deg, #facc15 0%, #fde68a 100%);
+}
+
+.type-poison {
+    background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+}
+
+.type-psychic {
+    background: linear-gradient(135deg, #f472b6 0%, #fda4af 100%);
+}
+
+.type-fighting {
+    background: linear-gradient(135deg, #fb923c 0%, #fdba74 100%);
+}
+
+.type-ice {
+    background: linear-gradient(135deg, #93c5fd 0%, #bfdbfe 100%);
+}
+
+.type-ghost {
+    background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
+}
+
+.type-default {
+    background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
+}
+
+.addButton {
+    background-color: #37362f;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+    background-color: #292929;
+}
+
+
+@media (max-width: 1300px) {
+
+    .cardBody {
+        padding: 0;
+    }
+
+    .cardName {
+        font-size: 1.2rem;
+    }
+
+    .addButton {
+        font-size: 0.8rem;
+        width: 80%;
+    }
+}
+
+@media (max-width: 1100px) {
+    .addButton {
+        font-size: 0.7rem;
+        width: 80%;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .addButton {
+        width: 100%;
+    }
+
+    .card {
+        flex-direction: column;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cardImageContainer {
+        width: 130%;
+        height: 100%;
+        border-bottom-right-radius: 100%;
+        border-bottom-left-radius: 100%;
+
+        margin-bottom: 1rem;
+    }
+
+    .cardImage {
+        width: 150px;
+        height: 150px;
+        margin-bottom: -40px;
+    }
+
+    .cardBody {
+        padding: 1rem;
+        width: 100%;
+        border-radius: 0 0 1rem 1rem;
+        text-align: center;
+    }
+
+    .stock_sec {
+        justify-content: center;
+    }
+
+    .cardTypes {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .cardImageContainer {
+        height: 160%;
+        border-bottom-right-radius: 150%;
+        border-bottom-left-radius: 150%;
+    }
+
+    .cardImage {
+        width: 120px;
+        height: 120px;
+    }
+
+    .cardName {
+        font-size: 1.25rem;
+    }
+
+    .cardPrice {
+        font-size: 1.125rem;
+    }
+
+    .cardStock {
+        font-size: 0.75rem;
+    }
+}
