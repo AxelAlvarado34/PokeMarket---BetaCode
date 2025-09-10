@@ -14,9 +14,6 @@ export default function Carousel() {
     const pokemons = usePokeStore(state => state.pokemons);
     const firstPokemons = pokemons.slice(0, 9);
 
-    console.log(firstPokemons);
-
-
     return (
         <section className={styles.carrousel_section}>
             <Swiper

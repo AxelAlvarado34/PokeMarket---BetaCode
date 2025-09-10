@@ -29,6 +29,8 @@ export class Cart {
         const existing = this.items.find((item) => item.pokemon.id === pokemon.id);
         if (existing) existing.increaseQuantity();
         else this.items.push(new CartItem(pokemon));
+
+        this.items = [...this.items];
     }
 
     removeItem(pokemonId: number) {

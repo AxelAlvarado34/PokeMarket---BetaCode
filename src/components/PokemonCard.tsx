@@ -1,6 +1,7 @@
 import { FaBox } from "react-icons/fa6";
 import styles from "../styles/CardPokemon.module.css";
 import type { Pokemon } from "../models/Pokemon";
+import { usePokeStore } from "../store/poke-store";
 
 
 interface PokemonCardProps {
@@ -8,6 +9,9 @@ interface PokemonCardProps {
 }
 
 export default function PokemonCard({ pokemon }: PokemonCardProps) {
+
+    const addToCart = usePokeStore(state => state.addToCart);
+
     return (
         <div className={styles.card}>
             <div
@@ -35,7 +39,13 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                         </span>
                     ))}
                 </div>
-                <button className={styles.addButton}>Agregar al carrito</button>
+                <button
+                    className={styles.addButton}
+                    onClick={() => addToCart(pokemon)}
+                    disabled={pokemon.stock === 0}
+                >
+                    {pokemon.stock === 0 ? "Sin stock" : "Agregar al carrito"}
+                </button>
             </div>
         </div>
     );
