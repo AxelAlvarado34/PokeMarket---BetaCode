@@ -41,7 +41,7 @@ export default function NavBar() {
                         <HiOutlineSearch className="text-gray-500 text-lg" />
                         <input
                             type="text"
-                            placeholder="Buscar Pokémon..."
+                            placeholder="Buscar Pokémon por su nombre..."
                             className="bg-transparent outline-none px-2 w-full text-sm"
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
