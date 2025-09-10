@@ -27,27 +27,36 @@ export const usePokeStore = create<UsePokeStoreProps>()(
                 const response = await axios.get(API_URL);
                 const parsedList = PokemonListSchema.parse(response.data);
 
-                const detailedPokemons: Pokemon[] = await Promise.all(
-                    parsedList.results.map(async (poke) => {
-                        const detailRes = await axios.get(poke.url);
-                        const detail = PokemonDetailSchema.parse(detailRes.data);
+                const storedPokemons = localStorage.getItem("pokemons");
+                let detailedPokemons: Pokemon[];
 
-                        return new Pokemon(
-                            detail.id,
-                            detail.name,
-                            detail.sprites.other?.["official-artwork"]?.front_default ??
-                            detail.sprites.front_default ?? "",
-                            detail.types.map((t) => t.type.name),
-                            generatePrice(),
-                            generateStock()
-                        );
-                    })
-                );
+                if (storedPokemons) {
+                    detailedPokemons = JSON.parse(storedPokemons);
+                } else {
+                    detailedPokemons = await Promise.all(
+                        parsedList.results.map(async (poke) => {
+                            const detailRes = await axios.get(poke.url);
+                            const detail = PokemonDetailSchema.parse(detailRes.data);
+
+                            return new Pokemon(
+                                detail.id,
+                                detail.name,
+                                detail.sprites.other?.["official-artwork"]?.front_default ??
+                                detail.sprites.front_default ?? "",
+                                detail.types.map((t) => t.type.name),
+                                generatePrice(),
+                                generateStock()
+                            );
+                        })
+                    );
+                    localStorage.setItem("pokemons", JSON.stringify(detailedPokemons));
+                }
 
                 set({
                     pokemons: detailedPokemons,
                     marketplace: new Marketplace(detailedPokemons),
                 });
+
             } catch (error) {
                 console.log(error);
             }
