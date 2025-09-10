@@ -4,6 +4,12 @@ import { Pokemon } from "../models/Pokemon";
 
 const CART_KEY = "cart";
 
+export const POKEMONS_KEY = "pokemons";
+
+export const savePokemons = (pokemons: Pokemon[]) => {
+    localStorage.setItem(POKEMONS_KEY, JSON.stringify(pokemons));
+};
+
 export const saveCart = (cart: Cart) =>
     localStorage.setItem(CART_KEY, JSON.stringify(cart.items));
 
@@ -40,4 +46,10 @@ export const loadCart = (): Cart => {
 export const updateMarketplace = (set: any, pokemons: Pokemon[], cart: Cart) => {
     saveCart(cart);
     set({ marketplace: Object.assign(new Marketplace(pokemons), { cart }) });
+};
+
+export const adjustStock = (pokemons: Pokemon[], pokemonId: number, amount: number): Pokemon[] => {
+    return pokemons.map(p =>
+        p.id === pokemonId ? new Pokemon(p.id, p.name, p.image, p.types, p.price, p.stock - amount) : p
+    );
 };
