@@ -4,10 +4,14 @@ import axios from "axios";
 import { Pokemon } from "../models/Pokemon";
 import { PokemonDetailSchema, PokemonListSchema } from "../schemas/pokemon-schema";
 import { generatePrice, generateStock } from "../helpers/poke-helpers";
+import { Marketplace } from "../models/MarketPlace";
 
 type UsePokeStoreProps = {
     pokemons: Pokemon[];
+    searchTerm: string;
+    setSearchTerm: (term: string) => void;
     getPokemons: () => Promise<void>;
+    marketplace: Marketplace;
 };
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -15,7 +19,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const usePokeStore = create<UsePokeStoreProps>()(
     devtools((set) => ({
         pokemons: [],
-
+        searchTerm: "",
+        setSearchTerm: (term: string) => set({ searchTerm: term }),
+        marketplace: new Marketplace([]),
         getPokemons: async () => {
             try {
                 const response = await axios.get(API_URL);
@@ -38,7 +44,10 @@ export const usePokeStore = create<UsePokeStoreProps>()(
                     })
                 );
 
-                set({ pokemons: detailedPokemons });
+                set({
+                    pokemons: detailedPokemons,
+                    marketplace: new Marketplace(detailedPokemons),
+                });
             } catch (error) {
                 console.log(error);
             }

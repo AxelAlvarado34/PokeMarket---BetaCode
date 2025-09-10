@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { HiOutlineMenu, HiOutlineSearch } from "react-icons/hi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
+import { usePokeStore } from "../store/poke-store";
 
 export default function NavBar() {
     const [cartCount, setCartCount] = useState(1);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const setSearchTerm = usePokeStore(state => state.setSearchTerm)
 
     return (
         <Fade triggerOnce={true} className="bg-white shadow-md">
@@ -41,6 +43,7 @@ export default function NavBar() {
                             type="text"
                             placeholder="Buscar Pokémon..."
                             className="bg-transparent outline-none px-2 w-full text-sm"
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className="relative cursor-pointer">

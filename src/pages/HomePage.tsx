@@ -14,6 +14,9 @@ export default function HomePage() {
             </div>
 
             <div className={styles.poke_catalog}>
+                <Fade direction="up" triggerOnce={true}>
+                    <h1 className={styles.list_sales}>Todos los pokemones</h1>
+                </Fade>
                 <PokemonList />
             </div>
 

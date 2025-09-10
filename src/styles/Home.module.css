@@ -20,3 +20,30 @@
     padding-left: 20px;
     border-radius: 50px;
 }
+
+.list_sales {
+    margin-left: 50px;
+    font-size: 1.5rem;
+    background-color: rgb(240, 240, 240);
+    width: 270px;
+    color: rgb(115, 115, 115);
+    font-weight: 400;
+    padding: 5px 0;
+    padding-left: 20px;
+    border-radius: 50px;
+}
+
+@media (max-width: 640px) {
+
+    .home_sales,
+    .list_sales {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .list_sales {
+        margin-bottom: 50px;
+    }
+}
