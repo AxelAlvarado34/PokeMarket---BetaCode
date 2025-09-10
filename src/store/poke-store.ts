@@ -5,6 +5,7 @@ import { Pokemon } from "../models/Pokemon";
 import { PokemonDetailSchema, PokemonListSchema } from "../schemas/pokemon-schema";
 import { generatePrice, generateStock } from "../helpers/poke-helpers";
 import { Marketplace } from "../models/MarketPlace";
+import { loadCart, updateMarketplace } from "../helpers/cart.helper";
 
 type UsePokeStoreProps = {
     pokemons: Pokemon[];
@@ -12,6 +13,8 @@ type UsePokeStoreProps = {
     setSearchTerm: (term: string) => void;
     getPokemons: () => Promise<void>;
     addToCart: (pokemon: Pokemon) => void;
+    incrementQuantity: (pokemonId: number) => void;
+    decrementQuantity: (pokemonId: number) => void;
     marketplace: Marketplace;
 };
 
@@ -27,13 +30,25 @@ export const usePokeStore = create<UsePokeStoreProps>()(
         addToCart: (pokemon: Pokemon) => {
             const store = get();
             store.marketplace.cart.addToCart(pokemon);
-
-            const newMarketplace = new Marketplace(store.marketplace.pokemons);
-            newMarketplace.cart = store.marketplace.cart;
-
-            set({ marketplace: newMarketplace });
+            updateMarketplace(set, store.pokemons, store.marketplace.cart);
         },
 
+        incrementQuantity: (pokemonId: number) => {
+            const store = get();
+            const item = store.marketplace.cart.items.find(i => i.pokemon.id === pokemonId);
+            if (item) item.increaseQuantity();
+            updateMarketplace(set, store.pokemons, store.marketplace.cart);
+        },
+
+        decrementQuantity: (pokemonId: number) => {
+            const store = get();
+            const item = store.marketplace.cart.items.find(i => i.pokemon.id === pokemonId);
+            if (item) {
+                item.decreaseQuantity();
+                if (item.quantity === 0) store.marketplace.cart.removeItem(pokemonId);
+            }
+            updateMarketplace(set, store.pokemons, store.marketplace.cart);
+        },
 
         getPokemons: async () => {
             try {
@@ -65,11 +80,10 @@ export const usePokeStore = create<UsePokeStoreProps>()(
                     localStorage.setItem("pokemons", JSON.stringify(detailedPokemons));
                 }
 
-                set({
-                    pokemons: detailedPokemons,
-                    marketplace: new Marketplace(detailedPokemons),
-                });
+                const cart = loadCart();
+                updateMarketplace(set, detailedPokemons, cart);
 
+                set({ pokemons: detailedPokemons });
             } catch (error) {
                 console.log(error);
             }
