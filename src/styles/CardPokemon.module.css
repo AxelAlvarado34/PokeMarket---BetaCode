@@ -106,6 +106,9 @@
     background: linear-gradient(135deg, #e0e0e0 0%, #cfcfcf 100%);
 }
 
+.cardImage-fairy {
+    background: linear-gradient(135deg, #fbcfe8 0%, #f9a8d4 100%);
+}
 
 .cardImage {
     width: 180px;
@@ -244,6 +247,9 @@
     background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
 }
 
+.type-fairy {
+    background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%);
+}
 
 .addButton {
     background-color: #37362f;
@@ -256,7 +262,8 @@
 }
 
 .addButton:hover {
-    background-color: #292929;
+    background-color: #e74444;
+    color: white;
 }
 
 

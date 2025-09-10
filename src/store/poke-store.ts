@@ -11,17 +11,30 @@ type UsePokeStoreProps = {
     searchTerm: string;
     setSearchTerm: (term: string) => void;
     getPokemons: () => Promise<void>;
+    addToCart: (pokemon: Pokemon) => void;
     marketplace: Marketplace;
 };
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const usePokeStore = create<UsePokeStoreProps>()(
-    devtools((set) => ({
+    devtools((set, get) => ({
         pokemons: [],
         searchTerm: "",
         setSearchTerm: (term: string) => set({ searchTerm: term }),
         marketplace: new Marketplace([]),
+
+        addToCart: (pokemon: Pokemon) => {
+            const store = get();
+            store.marketplace.cart.addToCart(pokemon);
+
+            const newMarketplace = new Marketplace(store.marketplace.pokemons);
+            newMarketplace.cart = store.marketplace.cart;
+
+            set({ marketplace: newMarketplace });
+        },
+
+
         getPokemons: async () => {
             try {
                 const response = await axios.get(API_URL);
