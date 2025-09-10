@@ -53,7 +53,14 @@ export const usePokeStore = create<UsePokeStoreProps>()(
             const store = get();
             const item = store.marketplace.cart.items.find(i => i.pokemon.id === pokemonId);
 
-            if (item && item.pokemon.stock > 0) item.increaseQuantity();
+            if (!item) return;
+
+            const pokemon = store.pokemons.find(p => p.id === pokemonId);
+            if (!pokemon) return;
+
+            if (item.quantity >= pokemon.stock) return;
+
+            item.increaseQuantity();
 
             const updatedPokemons = adjustStock(store.pokemons, pokemonId, 1)
 

@@ -266,6 +266,10 @@
     color: white;
 }
 
+.addButton:disabled {
+    opacity: 50%;
+}
+
 
 @media (max-width: 1300px) {
 
