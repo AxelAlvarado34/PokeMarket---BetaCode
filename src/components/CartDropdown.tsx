@@ -30,7 +30,7 @@ export default function CartDropdown({ cartItems, isOpen, onClose }: CartDropdow
                             className="block w-full bg-white border border-black px-4 py-2 text-sm font-bold uppercase tracking-wide text-black text-center hover:bg-black hover:text-white transition rounded-none"
                             onClick={onClose}
                         >
-                            PAGAR
+                            VER CARRITO
                         </NavLink>
                     </div>
                 </>
