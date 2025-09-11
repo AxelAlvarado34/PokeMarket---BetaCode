@@ -13,7 +13,6 @@ export default function LoginPage() {
 
             <div className="flex w-full md:w-1/2 items-center justify-center p-8 bg-white">
                 <LoginForm />
-
             </div>
         </section>
     )

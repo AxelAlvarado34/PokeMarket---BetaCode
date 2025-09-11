@@ -18,6 +18,7 @@ type UsePokeStoreProps = {
     decrementQuantity: (pokemonId: number) => void;
     marketplace: Marketplace;
     clearCart: () => void;
+    updateStock: (id: number, newStock: number) => void;
 };
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -167,6 +168,20 @@ export const usePokeStore = create<UsePokeStoreProps>()(
             set({ marketplace: store.marketplace });
 
             saveCart(store.marketplace.cart);
+        },
+        updateStock: (id: number, newStock: number) => {
+            const store = get();
+
+            const updatedPokemons = store.pokemons.map(p =>
+                p.id === id ? new Pokemon(p.id, p.name, p.image, p.types, p.price, newStock) : p);
+
+            const updatedMarketplace = new Marketplace(updatedPokemons);
+            updatedMarketplace.cart = store.marketplace.cart;
+
+            set({ pokemons: updatedPokemons, marketplace: updatedMarketplace });
+
+            savePokemons(updatedPokemons);
         }
+
     }))
 );

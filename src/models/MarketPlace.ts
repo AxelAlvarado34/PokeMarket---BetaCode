@@ -33,4 +33,11 @@ export class Marketplace {
         }
         return sorted;
     }
+
+    updateStock(id: number, newStock: number) {
+        const pokemon = this.pokemons.find((p) => p.id === id);
+        if (pokemon) {
+            pokemon.stock = newStock;
+        }
+    }
 }

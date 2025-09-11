@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar";
 import styles from "../styles/AdminPage.module.css";
 import PokemonFilters from "../components/PokemonFilters";
 import { useNavigate } from "react-router-dom";
+import PokemonTable from "../components/PokemonTable";
 
 
 const ITEMS_PER_PAGE = 9;
@@ -31,7 +32,7 @@ export default function AdminPage() {
 
     useEffect(() => { setCurrentPage(1); }, [searchTerm, filteredPokemons.length]);
 
-    const updateStock = (id: number, newStock: number) => marketplace.updateStock(id, newStock);
+    const updateStock = usePokeStore((state) => state.updateStock);
 
     const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
     const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -71,49 +72,7 @@ export default function AdminPage() {
             </div>
 
             <div className={styles.tableContainer}>
-                <table className={styles.table}>
-                    <thead className={styles.thead}>
-                        <tr>
-                            <th className={styles.th}>Imagen</th>
-                            <th className={styles.th}>Nombre</th>
-                            <th className={styles.th}>Tipo</th>
-                            <th className={styles.th}>Precio</th>
-                            <th className={styles.th}>Stock</th>
-                            <th className={styles.th}>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentPokemons.map((poke) => (
-                            <tr key={poke.id}>
-                                <td className={styles.td}>
-                                    <img src={poke.image} alt={poke.name} className="w-14 h-14 mx-auto" />
-                                </td>
-                                <td className={styles.td}>{poke.name}</td>
-                                <td className={styles.td}>
-                                    {poke.types.map((type) => (
-                                        <span key={type} className={`${styles.pill} ${styles[`type-${type}`]}`}>
-                                            {type}
-                                        </span>
-                                    ))}
-                                </td>
-                                <td className={styles.td}>${poke.price}</td>
-                                <td className={styles.td}>
-                                    <input
-                                        type="number"
-                                        value={poke.stock}
-                                        onChange={(e) => updateStock(poke.id, Number(e.target.value))}
-                                        className={styles.inputStock}
-                                    />
-                                </td>
-                                <td className={styles.td}>
-                                    <button onClick={() => updateStock(poke.id, poke.stock)} className={styles.btnSave}>
-                                        Guardar
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <PokemonTable pokemons={currentPokemons} updateStock={updateStock} />
             </div>
 
             <div className={styles.pagination}>
