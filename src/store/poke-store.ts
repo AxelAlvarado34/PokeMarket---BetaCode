@@ -17,6 +17,7 @@ type UsePokeStoreProps = {
     incrementQuantity: (pokemonId: number) => void;
     decrementQuantity: (pokemonId: number) => void;
     marketplace: Marketplace;
+    clearCart: () => void;
 };
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -159,5 +160,13 @@ export const usePokeStore = create<UsePokeStoreProps>()(
                 console.log(error);
             }
         },
+        clearCart: () => {
+            const store = get();
+            store.marketplace.cart.clearCart();
+
+            set({ marketplace: store.marketplace });
+
+            saveCart(store.marketplace.cart);
+        }
     }))
 );
