@@ -3,6 +3,7 @@ import type { LoginFormData } from "../types/pokeTypes"
 import { fakeUsers } from "../data/user.data"
 import { notifyError, notifySucces } from "../helpers/notify"
 import { useNavigate } from "react-router-dom"
+import { useUserStore, type User } from "../store/user-store"
 
 export default function LoginForm() {
 
@@ -16,21 +17,22 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     const onSubmit = (data: LoginFormData) => {
-        const user = fakeUsers.find(
+        const foundUser = fakeUsers.find(
             (u) => u.email === data.email && u.password === data.password
         );
 
-        if (user) {
+        if (foundUser) {
+            const user: User = {
+                email: foundUser.email,
+                role: foundUser.role === "admin" ? "admin" : "buyer",
+            };
+            useUserStore.getState().login(user);
             notifySucces(
                 `Bienvenido ${user.role === "admin" ? "Administrador" : "Comprador"}`
             );
-
             setTimeout(() => {
-                if (user.role === "admin") {
-                    navigate("/admin");
-                } else {
-                    navigate("/");
-                }
+                if (user.role === "admin") navigate("/admin");
+                else navigate("/");
             }, 2000);
         } else {
             notifyError("Credenciales inválidas");
