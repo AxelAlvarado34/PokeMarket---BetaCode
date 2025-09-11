@@ -37,6 +37,10 @@ export class Cart {
         this.items = this.items.filter((item) => item.pokemon.id !== pokemonId);
     }
 
+    clearCart() {
+        this.items = [];
+    }
+
     calculateTotal() {
         return this.items.reduce((total, item) => total + item.getTotal(), 0);
     }

@@ -1,16 +1,22 @@
+import { useState } from 'react';
 import { usePokeStore } from '../store/poke-store';
 import styles from '../styles/PayPage.module.css';
+import PaymentDialog from './PaymentDialog';
 
 const TAX_RATE = 0.13;
 
 export default function CartSummary() {
     const cart = usePokeStore((state) => state.marketplace.cart.items);
+    const clearCart = usePokeStore((state) => state.clearCart);
+
 
     const subtotal = cart.reduce((acc, item) => acc + item.pokemon.price * item.quantity, 0);
 
     const tax = subtotal * TAX_RATE;
 
     const total = subtotal + tax;
+
+    const [open, setOpen] = useState(false);
 
     return (
         <div className={styles.summary_box}>
@@ -31,9 +37,15 @@ export default function CartSummary() {
                 <span>${total.toFixed(2)}</span>
             </div>
 
-            <button className={styles.payButton} disabled={cart.length === 0}>
+            <button
+                className={styles.payButton}
+                disabled={cart.length === 0}
+                onClick={() => setOpen(true)}
+            >
                 Pagar
             </button>
+
+            <PaymentDialog isOpen={open} onClose={() => setOpen(false)} total={total} clearCart={clearCart} />
         </div>
     );
 }

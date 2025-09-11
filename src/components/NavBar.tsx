@@ -10,15 +10,12 @@ import SearchBar from "./SearchBar";
 
 export default function NavBar() {
 
-    const marketplace = usePokeStore((state) => state.marketplace);
+    const cartItems: CartItem[] = usePokeStore(state => state.marketplace.cart.items);
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const setSearchTerm = usePokeStore(state => state.setSearchTerm);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const setSearchTerm = usePokeStore(state => state.setSearchTerm)
-
-    const cartItems: CartItem[] = marketplace.cart.items;
-
-    const cartCount = marketplace.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
         <Fade triggerOnce={true} className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
