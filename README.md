@@ -12,6 +12,17 @@ Este proyecto está desarrollado utilizando React, TypeScript y Programación Or
 
 Puedes probar la aplicación en: [PokéMarket en Vercel](https://tu-proyecto.vercel.app)  
 
+## Usuarios de Prueba
+
+Para la prueba técnica, se han definido los siguientes usuarios simulados:
+
+| Email                   | Contraseña | Rol       |
+|-------------------------|------------|-----------|
+| admin@pokemarket.com    | 123456     | Administrador |
+| buyer@pokemarket.com    | 123456     | Comprador     |
+
+- **Administrador**: puede acceder al panel de administración y modificar el stock de Pokémon.  
+- **Comprador**: puede navegar por el catálogo, agregar Pokémon al carrito y simular pagos.
 
 
 ## 🚀 Instalación y ejecución
