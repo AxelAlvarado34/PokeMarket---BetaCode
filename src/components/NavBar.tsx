@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
-import { HiOutlineMenu } from "react-icons/hi";
+import { HiOutlineMenu, HiOutlineUser } from "react-icons/hi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { usePokeStore } from "../store/poke-store";
 import { CartItem } from "../models/Cart";
@@ -43,6 +43,10 @@ export default function NavBar() {
                             <CartDropdown cartItems={cartItems} isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
                         </div>
 
+                        <NavLink to="/login" className="cursor-pointer">
+                            <HiOutlineUser className="text-3xl hover:text-red-500 transition" />
+                        </NavLink>
+
                         <button
                             className="cursor-pointer"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -63,6 +67,10 @@ export default function NavBar() {
                         )}
                         <CartDropdown cartItems={cartItems} isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
                     </div>
+
+                    <NavLink to="/login" className="cursor-pointer">
+                        <HiOutlineUser className="text-3xl hover:text-red-500 transition" />
+                    </NavLink>
                 </div>
 
                 {isMenuOpen && (

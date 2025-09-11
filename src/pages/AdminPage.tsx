@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { usePokeStore } from "../store/poke-store";
-import styles from "../styles/PokemonList.module.css";
-import PokemonCard from "./PokemonCard";
 import { Marketplace } from "../models/MarketPlace";
-import PokemonFilters from "./PokemonFilters";
+import SearchBar from "../components/SearchBar";
+import styles from "../styles/AdminPage.module.css";
+import PokemonFilters from "../components/PokemonFilters";
+import { useNavigate } from "react-router-dom";
+import PokemonTable from "../components/PokemonTable";
 
 
 const ITEMS_PER_PAGE = 9;
 
-export default function PokemonList() {
-
+export default function AdminPage() {
     const marketplace = usePokeStore((state) => state.marketplace);
     const searchTerm = usePokeStore((state) => state.searchTerm);
 
@@ -19,6 +20,7 @@ export default function PokemonList() {
     const [currentPage, setCurrentPage] = useState(1);
 
     let filteredPokemons = marketplace.pokemons;
+
     if (searchTerm) filteredPokemons = marketplace.searchByName(searchTerm);
     if (typeFilter) filteredPokemons = filteredPokemons.filter((p) => marketplace.filterByType(typeFilter).includes(p));
     filteredPokemons = filteredPokemons.filter((p) => marketplace.filterByPrice(priceRange.min, priceRange.max).includes(p));
@@ -28,16 +30,37 @@ export default function PokemonList() {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const currentPokemons = filteredPokemons.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+    useEffect(() => { setCurrentPage(1); }, [searchTerm, filteredPokemons.length]);
+
+    const updateStock = usePokeStore((state) => state.updateStock);
+
     const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
     const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [searchTerm, filteredPokemons.length]);
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        usePokeStore.getState().setSearchTerm("");
+        navigate("/login");
+    };
 
     return (
-        <div className={styles.poke_catalog}>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <div className={styles.logoTitle}>
+                    <img className={styles.pokeIcon} src="/pokeball.png" alt="poke-icon" />
+                    <h1 className={styles.title}>Panel de Administrador</h1>
+                </div>
+                <button onClick={handleLogout} className={styles.btnLogout}>
+                    Cerrar sesión
+                </button>
+            </div>
+
+
             <div className={styles.filters}>
+                <div className={`${styles.filterItem} ${styles.searchBar}`}>
+                    <SearchBar onSearch={usePokeStore.getState().setSearchTerm} fullWidth />
+                </div>
+
                 <PokemonFilters
                     typeFilter={typeFilter}
                     setTypeFilter={setTypeFilter}
@@ -47,24 +70,16 @@ export default function PokemonList() {
                     setSortOption={setSortOption}
                 />
             </div>
-            <div className={styles.pokemon_grid}>
-                {currentPokemons.map((poke) => (
-                    <PokemonCard key={poke.id} pokemon={poke} />
-                ))}
+
+            <div className={styles.tableContainer}>
+                <PokemonTable pokemons={currentPokemons} updateStock={updateStock} />
             </div>
 
             <div className={styles.pagination}>
-                <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                    Anterior
-                </button>
-                <span>
-                    {currentPage} / {totalPages}
-                </span>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages || totalPages === 1}>
-                    Siguiente
-                </button>
+                <button onClick={handlePrevPage} disabled={currentPage === 1} className={styles.btnPage}>Anterior</button>
+                <span>{currentPage} / {totalPages}</span>
+                <button onClick={handleNextPage} disabled={currentPage === totalPages || totalPages === 1} className={styles.btnPage}>Siguiente</button>
             </div>
         </div>
     );
-
 }
