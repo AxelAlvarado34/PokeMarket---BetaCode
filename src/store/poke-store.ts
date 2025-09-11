@@ -6,6 +6,7 @@ import { PokemonDetailSchema, PokemonListSchema } from "../schemas/pokemon-schem
 import { generatePrice, generateStock } from "../helpers/poke-helpers";
 import { Marketplace } from "../models/MarketPlace";
 import { adjustStock, loadCart, saveCart, savePokemons, } from "../helpers/cart.helper";
+import { CartItem } from "../models/Cart";
 
 type UsePokeStoreProps = {
     pokemons: Pokemon[];
@@ -60,41 +61,53 @@ export const usePokeStore = create<UsePokeStoreProps>()(
 
             if (item.quantity >= pokemon.stock) return;
 
-            item.increaseQuantity();
+            const updatedCartItems = store.marketplace.cart.items.map(i =>
+                i.pokemon.id === pokemonId
+                    ? new CartItem(i.pokemon, i.quantity + 1)
+                    : i
+            );
 
-            const updatedPokemons = adjustStock(store.pokemons, pokemonId, 1)
+            const updatedPokemons = adjustStock(store.pokemons, pokemonId, 1);
 
             const updatedMarketplace = new Marketplace(updatedPokemons);
-            updatedMarketplace.cart = store.marketplace.cart;
+            updatedMarketplace.cart.items = updatedCartItems;
 
             set({
                 pokemons: updatedPokemons,
                 marketplace: updatedMarketplace,
             });
 
-            saveCart(store.marketplace.cart);
+            saveCart(updatedMarketplace.cart);
             savePokemons(updatedPokemons);
         },
 
         decrementQuantity: (pokemonId: number) => {
             const store = get();
             const item = store.marketplace.cart.items.find(i => i.pokemon.id === pokemonId);
-            if (item) {
-                item.decreaseQuantity();
-                if (item.quantity === 0) store.marketplace.cart.removeItem(pokemonId);
+
+            if (!item) return;
+
+            let updatedCartItems;
+
+            if (item.quantity > 1) {
+                updatedCartItems = store.marketplace.cart.items.map(i =>
+                    i.pokemon.id === pokemonId ? new CartItem(i.pokemon, i.quantity - 1) : i
+                );
+            } else {
+                updatedCartItems = store.marketplace.cart.items.filter(i => i.pokemon.id !== pokemonId);
             }
 
             const updatedPokemons = adjustStock(store.pokemons, pokemonId, -1);
 
             const updatedMarketplace = new Marketplace(updatedPokemons);
-            updatedMarketplace.cart = store.marketplace.cart;
+            updatedMarketplace.cart.items = updatedCartItems;
 
             set({
                 pokemons: updatedPokemons,
                 marketplace: updatedMarketplace,
             });
 
-            saveCart(store.marketplace.cart);
+            saveCart(updatedMarketplace.cart);
             savePokemons(updatedPokemons);
         },
 

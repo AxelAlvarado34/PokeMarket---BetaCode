@@ -1,5 +1,7 @@
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { CartItem } from "../models/Cart";
 import { usePokeStore } from "../store/poke-store";
+import { FiShoppingCart } from "react-icons/fi";
 
 type PokemonCartItemProps = {
     item: CartItem;
@@ -19,7 +21,10 @@ export default function PokemonCartItem({ item }: PokemonCartItemProps) {
             />
             <div className="flex-1">
                 <p className="text-sm font-medium">{pokemon.name}</p>
-                <p className="text-xs text-gray-500">${pokemon.price} x {quantity}</p>
+                <p className="text-xs text-gray-500 flex gap-1 mt-1 items-center">
+                    <RiMoneyDollarCircleFill className={``} />{pokemon.price}
+                    <FiShoppingCart className={``} />{quantity}
+                </p>
             </div>
 
             <div className="flex items-center gap-2">
