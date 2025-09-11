@@ -52,6 +52,7 @@ export default function PokemonTable({ pokemons, updateStock }: PokemonTableProp
                             <td className={styles.td}>
                                 <input
                                     type="number"
+                                    min={0}
                                     value={stock}
                                     onChange={(e) => setStock(Number(e.target.value))}
                                     className={styles.inputStock}

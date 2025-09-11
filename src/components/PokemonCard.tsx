@@ -2,15 +2,24 @@ import { FaBox } from "react-icons/fa6";
 import styles from "../styles/CardPokemon.module.css";
 import type { Pokemon } from "../models/Pokemon";
 import { usePokeStore } from "../store/poke-store";
-
+import { useUserStore } from "../store/user-store";
+import { notifyError } from "../helpers/notify";
 
 interface PokemonCardProps {
-    pokemon: Pokemon
+    pokemon: Pokemon;
 }
 
 export default function PokemonCard({ pokemon }: PokemonCardProps) {
-
     const addToCart = usePokeStore(state => state.addToCart);
+    const user = useUserStore(state => state.user);
+
+    const handleAddToCart = () => {
+        if (!user || user.role !== "buyer") {
+            notifyError("Debes iniciar sesión como comprador para agregar al carrito");
+            return;
+        }
+        addToCart(pokemon);
+    };
 
     return (
         <div className={styles.card}>
@@ -41,7 +50,7 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
                 </div>
                 <button
                     className={styles.addButton}
-                    onClick={() => addToCart(pokemon)}
+                    onClick={handleAddToCart}
                     disabled={pokemon.stock === 0}
                 >
                     {pokemon.stock === 0 ? "Sin stock" : "Agregar al carrito"}
