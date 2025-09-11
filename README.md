@@ -10,7 +10,7 @@ Este proyecto está desarrollado utilizando React, TypeScript y Programación Or
 
 ## 🌐 Demo en vivo
 
-Puedes probar la aplicación en: [PokéMarket en Vercel](https://poke-market-beta-code-i31u0urjr.vercel.app/)  
+Puedes probar la aplicación en: [PokéMarket en Vercel](https://poke-market-beta-code-i31u0urjr.vercel.app/?_vercel_share=w1EnlmqvIlCUZbQiQD2JUG06QG8fQQAB)  
 
 ## Usuarios de Prueba
 
