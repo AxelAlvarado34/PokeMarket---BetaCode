@@ -7,39 +7,52 @@ import PokemonFilters from "../components/PokemonFilters";
 import { useNavigate } from "react-router-dom";
 import PokemonTable from "../components/PokemonTable";
 
-
 const ITEMS_PER_PAGE = 9;
 
 export default function AdminPage() {
     const marketplace = usePokeStore((state) => state.marketplace);
     const searchTerm = usePokeStore((state) => state.searchTerm);
+    const setSearchTerm = usePokeStore((state) => state.setSearchTerm);
+    const updateStock = usePokeStore((state) => state.updateStock);
 
     const [typeFilter, setTypeFilter] = useState<string | "">("");
-    const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({ min: 0, max: Infinity });
+    const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
+        min: 0,
+        max: Infinity,
+    });
     const [sortOption, setSortOption] = useState<"name" | "priceAsc" | "priceDesc" | "">("");
     const [currentPage, setCurrentPage] = useState(1);
 
     let filteredPokemons = marketplace.pokemons;
 
     if (searchTerm) filteredPokemons = marketplace.searchByName(searchTerm);
-    if (typeFilter) filteredPokemons = filteredPokemons.filter((p) => marketplace.filterByType(typeFilter).includes(p));
+    if (typeFilter)
+        filteredPokemons = filteredPokemons.filter((p) =>
+            marketplace.filterByType(typeFilter).includes(p)
+        );
+
     filteredPokemons = filteredPokemons.filter((p) => marketplace.filterByPrice(priceRange.min, priceRange.max).includes(p));
     if (sortOption) filteredPokemons = new Marketplace(filteredPokemons).sortBy(sortOption);
 
     const totalPages = Math.ceil(filteredPokemons.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const currentPokemons = filteredPokemons.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    const currentPokemons = filteredPokemons.slice(
+        startIndex,
+        startIndex + ITEMS_PER_PAGE
+    );
 
-    useEffect(() => { setCurrentPage(1); }, [searchTerm, filteredPokemons.length]);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, filteredPokemons.length]);
 
-    const updateStock = usePokeStore((state) => state.updateStock);
-
-    const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-    const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    const handlePrevPage = () =>
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+    const handleNextPage = () =>
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
     const navigate = useNavigate();
     const handleLogout = () => {
-        usePokeStore.getState().setSearchTerm("");
+        setSearchTerm("");
         navigate("/login");
     };
 
@@ -47,7 +60,11 @@ export default function AdminPage() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.logoTitle}>
-                    <img className={styles.pokeIcon} src="/pokeball.png" alt="poke-icon" />
+                    <img
+                        className={styles.pokeIcon}
+                        src="/pokeball.png"
+                        alt="poke-icon"
+                    />
                     <h1 className={styles.title}>Panel de Administrador</h1>
                 </div>
                 <button onClick={handleLogout} className={styles.btnLogout}>
@@ -55,10 +72,9 @@ export default function AdminPage() {
                 </button>
             </div>
 
-
             <div className={styles.filters}>
                 <div className={`${styles.filterItem} ${styles.searchBar}`}>
-                    <SearchBar onSearch={usePokeStore.getState().setSearchTerm} fullWidth />
+                    <SearchBar onSearch={setSearchTerm} fullWidth />
                 </div>
 
                 <PokemonFilters
@@ -72,13 +88,30 @@ export default function AdminPage() {
             </div>
 
             <div className={styles.tableContainer}>
-                <PokemonTable pokemons={currentPokemons} updateStock={updateStock} />
+                <PokemonTable
+                    pokemons={currentPokemons}
+                    updateStock={updateStock}
+                />
             </div>
 
             <div className={styles.pagination}>
-                <button onClick={handlePrevPage} disabled={currentPage === 1} className={styles.btnPage}>Anterior</button>
-                <span>{currentPage} / {totalPages}</span>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages || totalPages === 1} className={styles.btnPage}>Siguiente</button>
+                <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className={styles.btnPage}
+                >
+                    Anterior
+                </button>
+                <span>
+                    {currentPage} / {totalPages}
+                </span>
+                <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages || totalPages === 1}
+                    className={styles.btnPage}
+                >
+                    Siguiente
+                </button>
             </div>
         </div>
     );
